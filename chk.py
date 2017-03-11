@@ -8,7 +8,7 @@ def isprime(n) :
 
 def f1(m, n) :
     # According to the definition above
-    return isprime(n) or isprime(m)
+    return not (isprime(n) and isprime(m))
 
 def f2(m, n) :
     if m + n <= 6 : return 0
