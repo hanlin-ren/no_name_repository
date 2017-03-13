@@ -27,7 +27,7 @@ def f3(m, n) :
             q = P / p
             if p < q :
                 # Check the condition
-                # $\forall 2\le p<q\le 99, pq=mn,p\ne m\implies f_2(p,q)=\False$
+                # $\forall 2\le p<q, pq=mn,p\ne m\implies f_2(p,q)=\False$
                 if p != m :
                     if f2(p, q) : return 0
             else : break
@@ -40,7 +40,7 @@ def f4(m, n) :
         q = S - p
         if p < q:
             # Check the condition
-            # $\forall 2\le p<q\le 99, p+q=m+n, p\ne m\implies f_3(p,q)=\False$
+            # $\forall 2\le p<q, p+q=m+n, p\ne m\implies f_3(p,q)=\False$
             if p != m :
                 if f3(p, q) : return 0
         else : break
