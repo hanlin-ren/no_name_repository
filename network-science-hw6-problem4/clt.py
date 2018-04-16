@@ -5,18 +5,20 @@ import math
 def print_ccdf(x, logscale = False) :
 	x = sorted(x)[::-1]
 	n = len(x)
+	u,v = [(math.log(x[i]) if logscale else x[i], math.log(1.0*(i+1)/n) if logscale else 1.0*(i+1)/n) for i in range(len(x)) if (not logscale) or (x[i] > 0)],[]
+	la = 1e10
+	for i,j in u :
+		if i<la-1e-2 :
+			v+=[(i,j)]
+			la = i
 	print """\\begin{{tikzpicture}}
 \\begin{{axis}}[xlabel={0},ylabel={1}]
 \\addplot[mark=*,mark size=0.5] coordinates {{ {2} }};
 \\end{{axis}}
-\\end{{tikzpicture}}
-""".format(
+\\end{{tikzpicture}}""".format(
 		"$\\ln x$" if logscale else "$x$",
 		"$\\ln \\bar{F}_{\\text{emph}}(x)$" if logscale else "$\\bar{F}_{\\text{emph}}(x)$",
-		" ".join(["({0}, {1})".format(
-			math.log(x[i]) if logscale else x[i],
-			math.log(1.0*(i+1)/n) if logscale else 1.0*(i+1)/n
-		) for i in range(len(x)) if (not logscale) or (x[i] > 0)]))
+		" ".join(["({0}, {1})".format(a,b) for a,b in v]))
 
 def print_histogram(x) :
 	l = math.floor(min(x))
@@ -51,6 +53,9 @@ def classical_clt(k, n) :
 	for i in range(k) :
 		x += [classical_clt_(n)]
 	print_histogram(x)
+	print """\\caption{Classical CLT\\label{f1}}
+\\end{minipage}
+\\begin{minipage}[c]{0.49\\textwidth}"""
 
 def generalized_clt_(alpha, n=10000) :
 	"""a sequence of `n` iid Pareto rv with shape parameter alpha and x_m=1."""
@@ -67,10 +72,25 @@ def generalized_clt(alpha, k=1000, n=10000) :
 	for i in range(k) :
 		x += [generalized_clt_(alpha, n)]
 	print_histogram(x)
+	print """\\caption{Generalized CLT\\label{f2}}
+\\end{minipage}
+\\end{figure}
+
+\\begin{figure}
+\\begin{minipage}[c]{0.49\\linewidth}"""
+
 	print_ccdf(x)
+	print """\\caption{empirical c.c.d.f.\\label{f3}}
+\\end{minipage}
+\\begin{minipage}[c]{0.49\\textwidth}"""
 	print_ccdf(x, True)
+	print """\\caption{empirical c.c.d.f. on a log-log scale.\\label{f4}}
+\\end{minipage}
+\\end{figure}"""
 
 if __name__ == '__main__' :
-	classical_clt(10000, 10000)
-	generalized_clt(1.618, 500, 10000)
+	print """\\begin{figure}
+\\begin{minipage}[c]{0.49\linewidth}"""
+	classical_clt(10000, 10000)# 10000, 10000
+	generalized_clt(1.618, 10000, 10000) #
 
