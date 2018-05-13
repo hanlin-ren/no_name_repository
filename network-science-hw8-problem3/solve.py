@@ -17,5 +17,6 @@ if __name__ == '__main__' :
 	b1[63] = 0
 	E1 = numpy.linalg.solve(P, b1)
 	b2 = 1.0 - 2.0 * E1
+	b2[63] = 0
 	E2 = numpy.linalg.solve(P, b2)
 	print "E[T] =", E1[0], "; Var[T] =", E2[0] - E1[0]**2
